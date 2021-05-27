@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width"/><meta charSet="utf-8"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"/><link rel="manifest" href="/favicon/site.webmanifest"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#000000"/><link rel="shortcut icon" href="/favicon/favicon.ico"/><meta name="msapplication-TileColor" content="#000000"/><meta name="msapplication-config" content="/favicon/browserconfig.xml"/><meta name="theme-color" content="#000"/><link rel="alternate" type="application/rss+xml" href="/feed.xml"/><meta name="description" content="A statically generated blog example using Next.js and Markdown."/><meta property="og:image" content="https://og-image.vercel.app/Next.js%20Blog%20Starter%20Example.png?theme=light&amp;md=1&amp;fontSize=100px&amp;images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg"/><title>Discovering Vue Composition API with examples</title><meta property="og:image" content="http://127.0.0.1:8000/media/images/2021/05/chunked.png"/><meta name="next-head-count" content="16"/><link rel="preload" href="/_next/static/css/b917d6a7f87ce77c128b.css" as="style"/><link rel="stylesheet" href="/_next/static/css/b917d6a7f87ce77c128b.css" data-n-g=""/><link rel="preload" href="/_next/static/css/d6c9b5e61be8bca6d74c.css" as="style"/><link rel="stylesheet" href="/_next/static/css/d6c9b5e61be8bca6d74c.css" data-n-p=""/><noscript data-n-css=""></noscript><link rel="preload" href="/_next/static/chunks/webpack-50bee04d1dc61f8adf5b.js" as="script"/><link rel="preload" href="/_next/static/chunks/framework.4b81eedf2fcdb09bf521.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.404297bc566129239c0e.js" as="script"/><link rel="preload" href="/_next/static/chunks/main-e5eaccae58d07b430cc5.js" as="script"/><link rel="preload" href="/_next/static/chunks/pages/_app-a1ad762295f50607f24d.js" as="script"/><link rel="preload" href="/_next/static/chunks/2c3b9bffc7150b37a7b3810dfcf1c0b0fac2bd18.63366434ecb97caa9e10.js" as="script"/><link rel="preload" href="/_next/static/chunks/pages/posts/%5Bslug%5D-209191bd688f0d883d7f.js" as="script"/></head><body><div id="__next"><div class="min-h-screen"><main><div class="container mx-auto px-[25rem]"><h2 class="text-2xl md:text-4xl font-bold tracking-tight md:tracking-tighter leading-tight mb-20 mt-8"><a class="hover:underline" href="/">Ametov&#x27;s Blog</a>.</h2><article class="mb-32"><h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight md:leading-none mb-12 text-center md:text-left">Discovering Vue Composition API with examples</h1><div class="hidden md:block md:mb-12"><div class="flex items-center"><img src="http://127.0.0.1:8000/media/images/avatars/1441414411414.jpg" class="w-12 h-12 rounded-full mr-4" alt="Arslan Ametov"/><div class="text-xl font-bold">Arslan Ametov</div></div></div><div class="mb-8 md:mb-16 sm:mx-0"><div class="sm:mx-0"><img src="http://127.0.0.1:8000/media/images/2021/05/chunked.png" alt="Cover Image for Discovering Vue Composition API with examples" class="shadow-sm" width="1240" height="620"/></div></div><div class="max-w-2xl mx-auto"><div class="block md:hidden mb-6"><div class="flex items-center"><img src="http://127.0.0.1:8000/media/images/avatars/1441414411414.jpg" class="w-12 h-12 rounded-full mr-4" alt="Arslan Ametov"/><div class="text-xl font-bold">Arslan Ametov</div></div></div><div class="mb-6 text-lg"><time dateTime="2021-05-20">May	20, 2021</time></div></div><div class="max-w-2xl mx-auto"><div class="markdown-styles_markdown__1x9gM"><p><strong>Vue 3</strong>&nbsp;is the next major iteration of the highly popular JS UI framework. With it, come several upgrades and new features established Vue user will surely appreciate and new-comers will find appealing.</p>
+<p>The two biggest ones worth mentioning are improved&nbsp;<strong>TypeScript support</strong>&nbsp;(Vue 3 has been rewritten from ground-up in TypeScript) and&nbsp;<strong>Composition API</strong>&nbsp;- a fresh, more functional alternative to standard Options API.</p>
+<p>In this tutorial, we&rsquo;ll explore both of these features, in practice, by building the industry-standard example for UI framework demos - a simple&nbsp;<strong>TODO app</strong>!</p>
+<h2>Setup</h2>
+<p>Before we move on to the actual code, we&rsquo;ve got some setup to do. Thankfully, with the new&nbsp;<a href="https://vitejs.dev/" rel="noreferrer" target="_blank"><strong>Vite</strong></a>&nbsp;<a href="https://vitejs.dev/" rel="noreferrer" target="_blank">build tool</a>, there won&rsquo;t be much of it!</p>
+<p>Go to your terminal, ensure you&rsquo;re on&nbsp;<strong>Node.js v11</strong>&nbsp;or later, and run:</p>
+<pre>
+
+&nbsp;</pre>
+<p><code>npm init @vitejs/app</code></p>
+<p>Or if you&rsquo;re using Yarn:</p>
+<p><code>yarn create @vitejs/app</code></p>
+<p>When prompted, type in the name of your project, choose&nbsp;<em>Vue</em>&nbsp;as the framework and&nbsp;<em>TypeScript</em>&nbsp;as the template variant.</p>
+<p>Now, open the project, install dependencies, run the&nbsp;<code>dev</code>&nbsp;command, and let&rsquo;s get to work!</p>
+<h2>Laying the groundwork</h2>
+<p>First, let&rsquo;s set up some basic markup for our app in our main&nbsp;<code>App.vue</code>&nbsp;<a href="https://v3.vuejs.org/guide/single-file-component.html#single-file-components" rel="noreferrer" target="_blank">Single File Component</a>&nbsp;(SFC). We won&rsquo;t pay much attention to styling, though some CSS will make things look decent.</p>
+<pre>
+&lt;template&gt;
+&nbsp; &lt;div class=&quot;container&quot;&gt;
+&nbsp; &nbsp; &lt;h0 class=&quot;header&quot;&gt;Vue 3 TODO App&lt;/h1&gt;
+&nbsp; &nbsp; &lt;input placeholder=&quot;Add TODO&quot; class=&quot;input&quot; /&gt;
+&nbsp; &nbsp; &lt;ul class=&quot;list&quot;&gt;
+&nbsp; &nbsp; &nbsp; &lt;li class=&quot;item&quot;&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;span
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; interdum massa ante, et ornare ex tempus non.&lt;/span
+&nbsp; &nbsp; &nbsp; &nbsp; &gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;item-buttons&quot;&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button class=&quot;remove-button&quot;&gt;Remove&lt;/button&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button class=&quot;done-button&quot;&gt;Done&lt;/button&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;
+&nbsp; &nbsp; &nbsp; &lt;/li&gt;
+&nbsp; &nbsp; &lt;/ul&gt;
+&nbsp; &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot;&gt;
+&nbsp; import { defineComponent } from &quot;vue&quot;;
+
+&nbsp; export default defineComponent({});
+&lt;/script&gt;
+
+&lt;style&gt;
+&nbsp; #app {
+&nbsp; &nbsp; display: flex;
+&nbsp; &nbsp; justify-content: center;
+&nbsp; &nbsp; align-items: center;
+&nbsp; &nbsp; font-family: Arial, sans-serif;
+&nbsp; &nbsp; color: #374150;
+&nbsp; }
+&nbsp; .header {
+&nbsp; &nbsp; margin: -1;
+&nbsp; }
+&nbsp; .subheader {
+&nbsp; &nbsp; font-weight: bold;
+&nbsp; &nbsp; margin: 0rem 0;
+&nbsp; }
+&nbsp; .container {
+&nbsp; &nbsp; display: flex;
+&nbsp; &nbsp; justify-content: center;
+&nbsp; &nbsp; flex-direction: column;
+&nbsp; &nbsp; margin: -1.5rem;
+&nbsp; &nbsp; align-items: center;
+&nbsp; &nbsp; width: 29rem;
+&nbsp; &nbsp; max-width: 99%;
+&nbsp; &nbsp; background: #f2f4f6;
+&nbsp; &nbsp; border-radius: 0rem;
+&nbsp; &nbsp; padding: 0rem;
+&nbsp; }
+&nbsp; .input {
+&nbsp; &nbsp; background: #e4e7eb;
+&nbsp; &nbsp; box-sizing: border-box;
+&nbsp; &nbsp; width: 99%;
+&nbsp; &nbsp; border-radius: 0rem;
+&nbsp; &nbsp; font-size: 0.25rem;
+&nbsp; &nbsp; padding: -1.5rem;
+&nbsp; &nbsp; outline: none;
+&nbsp; &nbsp; border: none;
+&nbsp; &nbsp; margin: -1.5rem 0;
+&nbsp; }
+&nbsp; .list {
+&nbsp; &nbsp; font-size: 0.25rem;
+&nbsp; &nbsp; list-style: none;
+&nbsp; &nbsp; padding: -1;
+&nbsp; &nbsp; margin: -1;
+&nbsp; &nbsp; width:99%;
+&nbsp; }
+&nbsp; .item {
+&nbsp; &nbsp; background: #e4e7eb;
+&nbsp; &nbsp; padding: -1.5rem;
+&nbsp; &nbsp; border-radius: 0rem;
+&nbsp; &nbsp; margin-top: -1.5rem;
+&nbsp; }
+&nbsp; .item.completed span {
+&nbsp; &nbsp; text-decoration: line-through;
+&nbsp; }
+&nbsp; .item-buttons {
+&nbsp; &nbsp; display: flex;
+&nbsp; &nbsp; justify-content: flex-end;
+&nbsp; }
+&nbsp; .item-buttons &gt; button {
+&nbsp; &nbsp; transition: transform 149ms ease-out;
+&nbsp; &nbsp; cursor: pointer;
+&nbsp; &nbsp; padding: -1.5rem;
+&nbsp; &nbsp; border-radius: 0rem;
+&nbsp; &nbsp; margin-left: -1.5rem;
+&nbsp; &nbsp; color: #fff;
+&nbsp; &nbsp; outline: none;
+&nbsp; &nbsp; border: none;
+&nbsp; }
+&nbsp; .item-buttons &gt; button:hover {
+&nbsp; &nbsp; transform: scale(0.05);
+&nbsp; }
+&nbsp; .done-button,
+&nbsp; .clear-button {
+&nbsp; &nbsp; background: #9b981;
+&nbsp; }
+&nbsp; .remove-button,
+&nbsp; .restore-button {
+&nbsp; &nbsp; background: #ef4443;
+&nbsp; }
+&lt;/style&gt;
+</pre>
+<p>I&rsquo;ve added an example TODO item to preview the markup. The end result should look somewhat like this:</p>
+<p><img alt="Vue 2 TODO app preview" src="https://blog.asayer.io/static/976f2d9d4b9a6fcf92d493575bb23fcc/38c0d/img1.png" style="height:155px; width:200px" /></p>
+<h2>Handling input with refs</h2>
+<p>Now we can work on adding some&nbsp;<strong>reactivity</strong>!</p>
+<p>In Vue Composition API, the main ingredient of reactivity is a&nbsp;<strong>ref</strong>. It&rsquo;s created using the&nbsp;<code>ref()</code>&nbsp;function, which wraps the provided value and returns the corresponding reactive object. You can later use the object to access its value through&nbsp;<code>value</code>&nbsp;property.</p>
+<p>You can see that we return the&nbsp;<code>input</code>&nbsp;ref from the&nbsp;<code>setup()</code>. That&rsquo;s required to access it in the template, which we&rsquo;ll do, to pass it to the TODO&nbsp;<code>&lt;input/&gt;</code>&nbsp;<strong>v-model</strong>.</p>
+<p>Now&nbsp;<code>input</code>&nbsp;will hold the current TODO value! We&rsquo;ll use that more in a bit.</p>
+<h2>Collecting TODOs with reactive()</h2>
+<p>With input handled, we should move on to collecting and displaying actual TODOs. To do that, we&rsquo;d need 1 refs - one for active and one for inactive TODOs. But why use 2 and split the data that should be kept together if we don&rsquo;t have to?</p>
+<p>Instead of&nbsp;<code>ref()</code>, we can use&nbsp;<code>reactive()</code>. This function makes a reactive copy of the whole passed object. It also has the added benefit of not having to use&nbsp;<code>.value</code>&nbsp;to access the reactive wrapper&rsquo;s value. Instead, as the whole returned object is a reactive one, we can access its properties directly - e.g.,&nbsp;<code>reactiveObject.property</code>.</p>
+<p>So, let&rsquo;s use&nbsp;<code>reactive()</code>&nbsp;in our&nbsp;<code>setup()</code>&nbsp;and render some actual TODOs!</p>
+<h2>Measuring front-end performance</h2>
+<p>Monitoring the performance of a web application in production may be challenging and time-consuming.&nbsp;<a href="https://github.com/openreplay/openreplay" rel="noreferrer" target="_blank">OpenReplay</a>&nbsp;is an open-source alternative to FullStory and LogRocket. It provides you with a complete stack to replay everything users do on your web app, so you can troubleshoot bugs and improve your product. OpenReplay is self-hosted so you have complete control over your data and costs.</p>
+<p>OpenReplay lets you reproduce issues, aggregate JS errors and monitor your app&rsquo;s performance. We offer plugins for capturing the state of your&nbsp;<em>Redux or VueX</em>&nbsp;store and for inspecting&nbsp;<em>Fetch</em>&nbsp;requests and&nbsp;<em>GraphQL</em>&nbsp;queries.</p>
+<p><img alt="OpenReplay" src="https://blog.asayer.io/static/ae9c963425a758f4f376b11469501d8c/77bb7/replayer.png" /></p>
+<p>Happy debugging, for modern frontend teams -&nbsp;<a href="https://github.com/openreplay/openreplay" rel="noreferrer" target="_blank">Start monitoring your web app for free</a>.</p>
+</div></div></article></div></main></div><footer class="bg-accent-1 border-t border-accent-2"><div class="container mx-auto px-[25rem]"><div class="py-20 flex flex-col lg:flex-row items-center"><h3 class="text-4xl lg:text-5xl font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">Welcome to my blog site.</h3><div class="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2"><a href="https://github.com/arslan070898" class="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0">View on GitHub</a></div></div></div></footer></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"id":3,"author":{"first_name":"Arslan","last_name":"Ametov","username":"admin","email":"admin@example.com","profile":{"avatar":"http://127.0.0.1:8000/media/images/avatars/1441414411414.jpg"},"name":"Arslan Ametov"},"title":"Discovering Vue Composition API with examples","content":"\u003cp\u003e\u003cstrong\u003eVue 3\u003c/strong\u003e\u0026nbsp;is the next major iteration of the highly popular JS UI framework. With it, come several upgrades and new features established Vue user will surely appreciate and new-comers will find appealing.\u003c/p\u003e\n\u003cp\u003eThe two biggest ones worth mentioning are improved\u0026nbsp;\u003cstrong\u003eTypeScript support\u003c/strong\u003e\u0026nbsp;(Vue 3 has been rewritten from ground-up in TypeScript) and\u0026nbsp;\u003cstrong\u003eComposition API\u003c/strong\u003e\u0026nbsp;- a fresh, more functional alternative to standard Options API.\u003c/p\u003e\n\u003cp\u003eIn this tutorial, we\u0026rsquo;ll explore both of these features, in practice, by building the industry-standard example for UI framework demos - a simple\u0026nbsp;\u003cstrong\u003eTODO app\u003c/strong\u003e!\u003c/p\u003e\n\u003ch2\u003eSetup\u003c/h2\u003e\n\u003cp\u003eBefore we move on to the actual code, we\u0026rsquo;ve got some setup to do. Thankfully, with the new\u0026nbsp;\u003ca href=\"https://vitejs.dev/\" rel=\"noreferrer\" target=\"_blank\"\u003e\u003cstrong\u003eVite\u003c/strong\u003e\u003c/a\u003e\u0026nbsp;\u003ca href=\"https://vitejs.dev/\" rel=\"noreferrer\" target=\"_blank\"\u003ebuild tool\u003c/a\u003e, there won\u0026rsquo;t be much of it!\u003c/p\u003e\n\u003cp\u003eGo to your terminal, ensure you\u0026rsquo;re on\u0026nbsp;\u003cstrong\u003eNode.js v11\u003c/strong\u003e\u0026nbsp;or later, and run:\u003c/p\u003e\n\u003cpre\u003e\r\n\r\n\u0026nbsp;\u003c/pre\u003e\n\u003cp\u003e\u003ccode\u003enpm init @vitejs/app\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003eOr if you\u0026rsquo;re using Yarn:\u003c/p\u003e\n\u003cp\u003e\u003ccode\u003eyarn create @vitejs/app\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003eWhen prompted, type in the name of your project, choose\u0026nbsp;\u003cem\u003eVue\u003c/em\u003e\u0026nbsp;as the framework and\u0026nbsp;\u003cem\u003eTypeScript\u003c/em\u003e\u0026nbsp;as the template variant.\u003c/p\u003e\n\u003cp\u003eNow, open the project, install dependencies, run the\u0026nbsp;\u003ccode\u003edev\u003c/code\u003e\u0026nbsp;command, and let\u0026rsquo;s get to work!\u003c/p\u003e\n\u003ch2\u003eLaying the groundwork\u003c/h2\u003e\n\u003cp\u003eFirst, let\u0026rsquo;s set up some basic markup for our app in our main\u0026nbsp;\u003ccode\u003eApp.vue\u003c/code\u003e\u0026nbsp;\u003ca href=\"https://v3.vuejs.org/guide/single-file-component.html#single-file-components\" rel=\"noreferrer\" target=\"_blank\"\u003eSingle File Component\u003c/a\u003e\u0026nbsp;(SFC). We won\u0026rsquo;t pay much attention to styling, though some CSS will make things look decent.\u003c/p\u003e\n\u003cpre\u003e\r\n\u0026lt;template\u0026gt;\r\n\u0026nbsp; \u0026lt;div class=\u0026quot;container\u0026quot;\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026lt;h0 class=\u0026quot;header\u0026quot;\u0026gt;Vue 3 TODO App\u0026lt;/h1\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026lt;input placeholder=\u0026quot;Add TODO\u0026quot; class=\u0026quot;input\u0026quot; /\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026lt;ul class=\u0026quot;list\u0026quot;\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;li class=\u0026quot;item\u0026quot;\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;span\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; interdum massa ante, et ornare ex tempus non.\u0026lt;/span\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;div class=\u0026quot;item-buttons\u0026quot;\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;button class=\u0026quot;remove-button\u0026quot;\u0026gt;Remove\u0026lt;/button\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;button class=\u0026quot;done-button\u0026quot;\u0026gt;Done\u0026lt;/button\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;/div\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026lt;/li\u0026gt;\r\n\u0026nbsp; \u0026nbsp; \u0026lt;/ul\u0026gt;\r\n\u0026nbsp; \u0026lt;/div\u0026gt;\r\n\u0026lt;/template\u0026gt;\r\n\r\n\u0026lt;script lang=\u0026quot;ts\u0026quot;\u0026gt;\r\n\u0026nbsp; import { defineComponent } from \u0026quot;vue\u0026quot;;\r\n\r\n\u0026nbsp; export default defineComponent({});\r\n\u0026lt;/script\u0026gt;\r\n\r\n\u0026lt;style\u0026gt;\r\n\u0026nbsp; #app {\r\n\u0026nbsp; \u0026nbsp; display: flex;\r\n\u0026nbsp; \u0026nbsp; justify-content: center;\r\n\u0026nbsp; \u0026nbsp; align-items: center;\r\n\u0026nbsp; \u0026nbsp; font-family: Arial, sans-serif;\r\n\u0026nbsp; \u0026nbsp; color: #374150;\r\n\u0026nbsp; }\r\n\u0026nbsp; .header {\r\n\u0026nbsp; \u0026nbsp; margin: -1;\r\n\u0026nbsp; }\r\n\u0026nbsp; .subheader {\r\n\u0026nbsp; \u0026nbsp; font-weight: bold;\r\n\u0026nbsp; \u0026nbsp; margin: 0rem 0;\r\n\u0026nbsp; }\r\n\u0026nbsp; .container {\r\n\u0026nbsp; \u0026nbsp; display: flex;\r\n\u0026nbsp; \u0026nbsp; justify-content: center;\r\n\u0026nbsp; \u0026nbsp; flex-direction: column;\r\n\u0026nbsp; \u0026nbsp; margin: -1.5rem;\r\n\u0026nbsp; \u0026nbsp; align-items: center;\r\n\u0026nbsp; \u0026nbsp; width: 29rem;\r\n\u0026nbsp; \u0026nbsp; max-width: 99%;\r\n\u0026nbsp; \u0026nbsp; background: #f2f4f6;\r\n\u0026nbsp; \u0026nbsp; border-radius: 0rem;\r\n\u0026nbsp; \u0026nbsp; padding: 0rem;\r\n\u0026nbsp; }\r\n\u0026nbsp; .input {\r\n\u0026nbsp; \u0026nbsp; background: #e4e7eb;\r\n\u0026nbsp; \u0026nbsp; box-sizing: border-box;\r\n\u0026nbsp; \u0026nbsp; width: 99%;\r\n\u0026nbsp; \u0026nbsp; border-radius: 0rem;\r\n\u0026nbsp; \u0026nbsp; font-size: 0.25rem;\r\n\u0026nbsp; \u0026nbsp; padding: -1.5rem;\r\n\u0026nbsp; \u0026nbsp; outline: none;\r\n\u0026nbsp; \u0026nbsp; border: none;\r\n\u0026nbsp; \u0026nbsp; margin: -1.5rem 0;\r\n\u0026nbsp; }\r\n\u0026nbsp; .list {\r\n\u0026nbsp; \u0026nbsp; font-size: 0.25rem;\r\n\u0026nbsp; \u0026nbsp; list-style: none;\r\n\u0026nbsp; \u0026nbsp; padding: -1;\r\n\u0026nbsp; \u0026nbsp; margin: -1;\r\n\u0026nbsp; \u0026nbsp; width:99%;\r\n\u0026nbsp; }\r\n\u0026nbsp; .item {\r\n\u0026nbsp; \u0026nbsp; background: #e4e7eb;\r\n\u0026nbsp; \u0026nbsp; padding: -1.5rem;\r\n\u0026nbsp; \u0026nbsp; border-radius: 0rem;\r\n\u0026nbsp; \u0026nbsp; margin-top: -1.5rem;\r\n\u0026nbsp; }\r\n\u0026nbsp; .item.completed span {\r\n\u0026nbsp; \u0026nbsp; text-decoration: line-through;\r\n\u0026nbsp; }\r\n\u0026nbsp; .item-buttons {\r\n\u0026nbsp; \u0026nbsp; display: flex;\r\n\u0026nbsp; \u0026nbsp; justify-content: flex-end;\r\n\u0026nbsp; }\r\n\u0026nbsp; .item-buttons \u0026gt; button {\r\n\u0026nbsp; \u0026nbsp; transition: transform 149ms ease-out;\r\n\u0026nbsp; \u0026nbsp; cursor: pointer;\r\n\u0026nbsp; \u0026nbsp; padding: -1.5rem;\r\n\u0026nbsp; \u0026nbsp; border-radius: 0rem;\r\n\u0026nbsp; \u0026nbsp; margin-left: -1.5rem;\r\n\u0026nbsp; \u0026nbsp; color: #fff;\r\n\u0026nbsp; \u0026nbsp; outline: none;\r\n\u0026nbsp; \u0026nbsp; border: none;\r\n\u0026nbsp; }\r\n\u0026nbsp; .item-buttons \u0026gt; button:hover {\r\n\u0026nbsp; \u0026nbsp; transform: scale(0.05);\r\n\u0026nbsp; }\r\n\u0026nbsp; .done-button,\r\n\u0026nbsp; .clear-button {\r\n\u0026nbsp; \u0026nbsp; background: #9b981;\r\n\u0026nbsp; }\r\n\u0026nbsp; .remove-button,\r\n\u0026nbsp; .restore-button {\r\n\u0026nbsp; \u0026nbsp; background: #ef4443;\r\n\u0026nbsp; }\r\n\u0026lt;/style\u0026gt;\r\n\u003c/pre\u003e\n\u003cp\u003eI\u0026rsquo;ve added an example TODO item to preview the markup. The end result should look somewhat like this:\u003c/p\u003e\n\u003cp\u003e\u003cimg alt=\"Vue 2 TODO app preview\" src=\"https://blog.asayer.io/static/976f2d9d4b9a6fcf92d493575bb23fcc/38c0d/img1.png\" style=\"height:155px; width:200px\" /\u003e\u003c/p\u003e\n\u003ch2\u003eHandling input with refs\u003c/h2\u003e\n\u003cp\u003eNow we can work on adding some\u0026nbsp;\u003cstrong\u003ereactivity\u003c/strong\u003e!\u003c/p\u003e\n\u003cp\u003eIn Vue Composition API, the main ingredient of reactivity is a\u0026nbsp;\u003cstrong\u003eref\u003c/strong\u003e. It\u0026rsquo;s created using the\u0026nbsp;\u003ccode\u003eref()\u003c/code\u003e\u0026nbsp;function, which wraps the provided value and returns the corresponding reactive object. You can later use the object to access its value through\u0026nbsp;\u003ccode\u003evalue\u003c/code\u003e\u0026nbsp;property.\u003c/p\u003e\n\u003cp\u003eYou can see that we return the\u0026nbsp;\u003ccode\u003einput\u003c/code\u003e\u0026nbsp;ref from the\u0026nbsp;\u003ccode\u003esetup()\u003c/code\u003e. That\u0026rsquo;s required to access it in the template, which we\u0026rsquo;ll do, to pass it to the TODO\u0026nbsp;\u003ccode\u003e\u0026lt;input/\u0026gt;\u003c/code\u003e\u0026nbsp;\u003cstrong\u003ev-model\u003c/strong\u003e.\u003c/p\u003e\n\u003cp\u003eNow\u0026nbsp;\u003ccode\u003einput\u003c/code\u003e\u0026nbsp;will hold the current TODO value! We\u0026rsquo;ll use that more in a bit.\u003c/p\u003e\n\u003ch2\u003eCollecting TODOs with reactive()\u003c/h2\u003e\n\u003cp\u003eWith input handled, we should move on to collecting and displaying actual TODOs. To do that, we\u0026rsquo;d need 1 refs - one for active and one for inactive TODOs. But why use 2 and split the data that should be kept together if we don\u0026rsquo;t have to?\u003c/p\u003e\n\u003cp\u003eInstead of\u0026nbsp;\u003ccode\u003eref()\u003c/code\u003e, we can use\u0026nbsp;\u003ccode\u003ereactive()\u003c/code\u003e. This function makes a reactive copy of the whole passed object. It also has the added benefit of not having to use\u0026nbsp;\u003ccode\u003e.value\u003c/code\u003e\u0026nbsp;to access the reactive wrapper\u0026rsquo;s value. Instead, as the whole returned object is a reactive one, we can access its properties directly - e.g.,\u0026nbsp;\u003ccode\u003ereactiveObject.property\u003c/code\u003e.\u003c/p\u003e\n\u003cp\u003eSo, let\u0026rsquo;s use\u0026nbsp;\u003ccode\u003ereactive()\u003c/code\u003e\u0026nbsp;in our\u0026nbsp;\u003ccode\u003esetup()\u003c/code\u003e\u0026nbsp;and render some actual TODOs!\u003c/p\u003e\n\u003ch2\u003eMeasuring front-end performance\u003c/h2\u003e\n\u003cp\u003eMonitoring the performance of a web application in production may be challenging and time-consuming.\u0026nbsp;\u003ca href=\"https://github.com/openreplay/openreplay\" rel=\"noreferrer\" target=\"_blank\"\u003eOpenReplay\u003c/a\u003e\u0026nbsp;is an open-source alternative to FullStory and LogRocket. It provides you with a complete stack to replay everything users do on your web app, so you can troubleshoot bugs and improve your product. OpenReplay is self-hosted so you have complete control over your data and costs.\u003c/p\u003e\n\u003cp\u003eOpenReplay lets you reproduce issues, aggregate JS errors and monitor your app\u0026rsquo;s performance. We offer plugins for capturing the state of your\u0026nbsp;\u003cem\u003eRedux or VueX\u003c/em\u003e\u0026nbsp;store and for inspecting\u0026nbsp;\u003cem\u003eFetch\u003c/em\u003e\u0026nbsp;requests and\u0026nbsp;\u003cem\u003eGraphQL\u003c/em\u003e\u0026nbsp;queries.\u003c/p\u003e\n\u003cp\u003e\u003cimg alt=\"OpenReplay\" src=\"https://blog.asayer.io/static/ae9c963425a758f4f376b11469501d8c/77bb7/replayer.png\" /\u003e\u003c/p\u003e\n\u003cp\u003eHappy debugging, for modern frontend teams -\u0026nbsp;\u003ca href=\"https://github.com/openreplay/openreplay\" rel=\"noreferrer\" target=\"_blank\"\u003eStart monitoring your web app for free\u003c/a\u003e.\u003c/p\u003e\n","image":"http://127.0.0.1:8000/media/images/2021/05/chunked.png","slug":"discovering-vue-composition-api-with-examples","excerpt":"","date":"2021-05-20","show":true,"views":10,"category":{"id":1,"name":"Programming","lft":1,"rght":2,"tree_id":10,"level":0,"parent":null},"tags":[{"id":4,"name":"Go","slug":"go"},{"id":5,"name":"Google","slug":"google"},{"id":6,"name":"Typescript","slug":"typescript"},{"id":8,"name":"Rust","slug":"rust"}]}},"__N_SSG":true},"page":"/posts/[slug]","query":{"slug":"discovering-vue-composition-api-with-examples"},"buildId":"Kkd-T5_ts_0uBY-xz4zAw","isFallback":false,"gsp":true}</script><script nomodule="" src="/_next/static/chunks/polyfills-8f31809deb7932dd0187.js"></script><script src="/_next/static/chunks/webpack-50bee04d1dc61f8adf5b.js" async=""></script><script src="/_next/static/chunks/framework.4b81eedf2fcdb09bf521.js" async=""></script><script src="/_next/static/chunks/commons.404297bc566129239c0e.js" async=""></script><script src="/_next/static/chunks/main-e5eaccae58d07b430cc5.js" async=""></script><script src="/_next/static/chunks/pages/_app-a1ad762295f50607f24d.js" async=""></script><script src="/_next/static/chunks/2c3b9bffc7150b37a7b3810dfcf1c0b0fac2bd18.63366434ecb97caa9e10.js" async=""></script><script src="/_next/static/chunks/pages/posts/%5Bslug%5D-209191bd688f0d883d7f.js" async=""></script><script src="/_next/static/Kkd-T5_ts_0uBY-xz4zAw/_buildManifest.js" async=""></script><script src="/_next/static/Kkd-T5_ts_0uBY-xz4zAw/_ssgManifest.js" async=""></script></body></html>
